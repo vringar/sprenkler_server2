@@ -1,0 +1,99 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Client API",
+        "version": "0.0.1"
+    },
+    "paths": {
+        "/": {
+            "get": {
+                "summary": "Tell me the device status",
+                "responses": {
+                    "200": {
+                        "description": "Uptime",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "uptime": {
+                                            "description": "How long the device has been running for",
+                                            "type": "integer"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/valve/{valveId}": {
+            "parameters": [
+                {
+                    "name": "valveId",
+                    "in": "path",
+                    "description": "Which valve we want to address",
+                    "required": true,
+                    "schema": {
+                        "type": "integer"
+                    }
+                }
+            ],
+            "get": {
+                "description": "Status of the valve",
+                "responses": {
+                    "200": {
+                        "description": "Whether it's up or down",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ValveStatus"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Valve with the given ID doesn't exist"
+                    }
+                }
+            },
+            "put": {
+                "description": "Set the valve",
+                "requestBody": {
+                    "description": "Pet to add to the store",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ValveStatus"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Valve was successfully set"
+                    },
+                    "500": {
+                        "description": "The valve could not be set"
+                    },
+                    "404": {
+                        "description": "Valve with the given ID doesn't exist"
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "ValveStatus": {
+                "type": "string",
+                "enum": [
+                    "open",
+                    "closed"
+                ]
+            }
+        }
+    }
+}
