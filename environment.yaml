@@ -5,4 +5,11 @@ dependencies:
 - pip
 - flask
 - jinja2
+- requests
+- black
+- pylint
+- structlog
+- mypy
+- pip:
+    - dataclasses-json
 name: sprenkler_server

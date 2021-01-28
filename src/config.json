@@ -1,0 +1,1 @@
+{"valves": [{"index": 0, "schedule": {"0": [{"t": "17:00:00", "td": "datetime.timedelta(seconds=5400)"}]}}], "global_disable": false}

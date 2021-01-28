@@ -1,0 +1,127 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Server API",
+        "version": "0.0.1"
+    },
+    "paths": {
+        "/": {
+            "get": {
+                "summary": "Server Overview",
+                "responses": {
+                    "200": {
+                        "description": "Main Page",
+                        "content": {
+                            "text/html": {
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/valve": {
+            "post":{
+                "requestBody": {
+                    "content": {
+                        "application/json":{
+                            "schema": {
+                                "$ref":"#/components/schemas/valve_id"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successfully created"
+                    }, 
+                    "400": {
+                        "description": "That was a bad number"
+                    }
+                }
+            }
+        },
+        "/valve/{valveId}": {
+            "parameters": [
+                {
+                    "name": "valveId",
+                    "in": "path",
+                    "description": "Which valve we want to address",
+                    "required": true,
+                    "schema": {
+                        "$ref":"#/components/schemas/valve_id"
+                    }
+                }
+            ],
+            "get": {
+                "description": "Status of the valve",
+                "responses": {
+                    "200": {
+                        "description": "Current Schedule and status",
+                        "content": {
+                            "text/html": {
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Valve with the given ID doesn't exist"
+                    }
+                }
+            },
+            "put": {
+                "description": "Add a valve schedule",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ValveSchedule"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Valve was successfully set"
+                    },
+                    "500": {
+                        "description": "The valve could not be set"
+                    },
+                    "404": {
+                        "description": "Valve with the given ID doesn't exist"
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "ValveStatus": {
+                "type": "string",
+                "enum": [
+                    "open",
+                    "closed"
+                ]
+            },
+            "ValveSchedule": {
+                "type": "object",
+                "properties": {
+                    "weekday": {
+                        "type": "integer",
+                        "description": "From 0-6"
+                    },
+                    "start_time": {
+                        "type": "string",
+                        "format": "time"
+                    },
+                    "duration":{
+                        "type": "string",
+                        "format": "duration"
+                    }
+                }
+            },
+            "valve_id": {
+                "type": "integer"  
+            }
+        }
+    }
+}
